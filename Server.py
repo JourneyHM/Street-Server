@@ -1,28 +1,51 @@
 #http://127.0.0.1:5000/ 
 import json
 import mesa
-from model import BoidFlockers
+from model import StreetView
 
 from flask import Flask, request
 
 
 app = Flask(__name__)
-boids = None  # Inicializa boids como None
+street = None  # Inicializa boids como None
 
 @app.route('/carAgents', methods = ['POST','GET'])
 def carAgents():
-    global boids  # Hace referencia a la variable global boids
+    global street  # Hace referencia a la variable global boids
 
     if request.method == 'POST':
         num = int(request.form['num'])
-        boids = BoidFlockers(num=num)   
-        p1 = boids.get_positions()
-        return arrayToJSON(p1)
+        street = StreetView(num=num)   
+        cars = street.getCarPositions()
+        return arrayToJSON(cars)
 
-@app.route('/trafficLightState', methods = ['POST','GET'])
-def trafficLightState():
-    if request.method == 'GET':
-        return "{\"traffic_lights\":[{\"trafficLight\":1,\"state\":\"green\"}]}"
+@app.route('/buildingsPosition', methods = ['POST','GET'])
+def buildingsPosition():
+    global street  # Hace referencia a la variable global boids
+
+    if request.method == 'POST':
+        num = int(request.form['num'])
+        street = StreetView(num=num)   
+        buildings = street.getBuildingsPosition()
+        return arrayToJSON(buildings)
+
+@app.route('/roundaboutPosition', methods = ['POST','GET'])
+def roundaboutPosition():
+    global street  # Hace referencia a la variable global boids
+
+    if request.method == 'POST':
+        num = int(request.form['num'])
+        street = StreetView(num=num)   
+        roundabout = street.getRoundAboutPositions()
+        return arrayToJSON(roundabout)
+
+@app.route('/trafficlightsPosition', methods = ['POST','GET'])
+def trafficLightsPosition():
+    if request.method == 'POST':
+        num = int(request.form['num'])
+        street = StreetView(num=num)   
+        trafficlights = street.getTrafficLightPositions()
+        return arrayToJSON(trafficlights)
     
     
 def arrayToJSON(ar):
