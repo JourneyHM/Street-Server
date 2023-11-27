@@ -3,35 +3,78 @@ import numpy as np
 
 class Buildings(mesa.Agent):
 
-    def __init__(self, unique_id, pos, model):
+    def __init__(
+            self, 
+            unique_id, 
+            model, 
+            pos
+        ):
         super().__init__(unique_id, model)
         self.pos = pos
 
 class ParkingSpots(mesa.Agent):
 
-    def __init__(self, unique_id, pos, model):
+    def __init__(
+            self, 
+            unique_id, 
+            model,
+            pos
+        ):
         super().__init__(unique_id, model)
         self.pos = pos
 
 class RoundAbout(mesa.Agent):
 
-    def __init__(self, unique_id, pos, model):
+    def __init__(
+            self, 
+            unique_id, 
+            model,
+            pos
+        ):
         super().__init__(unique_id, model)
         self.pos = pos
 
 class TrafficLight(mesa.Agent):
 
-    def __init__(self, unique_id, pos, model, state):
+    def __init__(
+            self, 
+            unique_id, 
+            model,
+            pos, 
+            state
+        ):
         super().__init__(unique_id, model)
         self.pos = pos
         self.state = state   # Green | Red
 
-class Car(mesa.Agent):
-    def __init__(self, unique_id, pos, model, path):
+class Street(mesa.Agent):
+
+    def __init__(
+            self, 
+            unique_id, 
+            model, 
+            pos,
+            direction
+        ):
         super().__init__(unique_id, model)
         self.pos = pos
-        self.path = path
-        self.current_path_index = 0  # Index to track the current position in the path
+        self.direction = direction # En que dirección pueden avanzar los autos
+
+class Car(mesa.Agent):
+    def __init__(
+            self, 
+            unique_id, 
+            model,
+            pos, 
+            path,
+            currentPathIndex, 
+            goal,
+        ):
+        super().__init__(unique_id, model)
+        self.pos = np.array(pos)
+        self.path = np.array(path)
+        self.currentPathIndex = currentPathIndex  # Index to track the current position in the path
+        self.goal = np.array(goal)
 
     def step(self):
         # Check if the car has reached the end of the path
